@@ -1,0 +1,43 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}SymCensus • Habitants{% endblock %}
+
+{% block body %}
+    <div class="container mt-4">
+
+        <h1>Les habitants</h1>
+
+        {% if not residents is same as([]) %}     
+
+            <table class="table table-hover mt-4">
+                <thead>
+                    <tr>
+                        <th scope="col">N°</th>
+                        <th scope="col">Nom</th>
+                        <th scope="col">Prenom</th>
+                        <th scope="col">Pays</th>
+                        <th scope="col">Adresse</th>
+                        <th scope="col">Email</th>
+                    </tr>
+                </thead>
+                <tbody>
+                {% for resident in residents %}
+                    <tr class="table-primary">
+                        <th scope="row">{{resident.id}}</th>
+                        <td>{{resident.lastname}}</td>
+                        <td>{{resident.firstname}}</td>
+                        <td>{{resident.birthCountry}}</td>
+                        <td>{{resident.address}}</td>
+                        <td>{{resident.email}}</td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        {% else %}
+            <div class="mt-4">
+                Il n'y à aucun résident
+            </div>
+        {% endif %}
+    </div>
+
+{% endblock %}
