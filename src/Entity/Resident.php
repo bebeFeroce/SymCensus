@@ -41,6 +41,9 @@ class Resident
     #[ORM\Column]
     private ?\DateTimeImmutable $createdAt = null;
 
+    #[ORM\ManyToOne(targetEntity: Family::class, inversedBy: 'familyMembers')]
+    private ?Family $family = null;
+
 
     public function __construct()
     {
@@ -156,6 +159,18 @@ class Resident
     public function setCreatedAt(\DateTimeImmutable $createdAt): self
     {
         $this->createdAt = $createdAt;
+
+        return $this;
+    }
+
+    public function getFamily(): ?Family
+    {
+        return $this->family;
+    }
+
+    public function setFamily(?Family $family): self
+    {
+        $this->family = $family;
 
         return $this;
     }

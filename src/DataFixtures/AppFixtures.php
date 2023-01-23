@@ -2,6 +2,7 @@
 
 namespace App\DataFixtures;
 
+use App\Entity\Family;
 use App\Entity\Resident;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
@@ -17,9 +18,11 @@ class AppFixtures extends Fixture
     {
         $this->faker = Factory::create('fr_FR');
     }
+
     public function load(ObjectManager $manager): void
     {
         // Resident
+        $residents = [];
         for ($i=0; $i < 50; $i++) { 
             $resident = new Resident();
             $resident->setFirstname($this->faker->firstName())
@@ -31,9 +34,28 @@ class AppFixtures extends Fixture
             ->setEmail(mt_rand(0, 1) == 1 ? $this->faker->email() : 'N/A')
             ->setAddress($this->faker->address());
 
+            $residents[] = $resident;
             $manager->persist($resident);
         }
 
-        $manager->flush();
+        // Family
+        for ($i=0; $i < 50; $i++) { 
+            $family = new Family();
+            $family->setName($this->faker->name())
+            ->setHeadOfHousehold($this->faker->name())
+            ->setAddress($this->faker->address())
+            ->setCity($this->faker->city())
+            ->setCountry($this->faker->country())
+            ->setContact($this->faker->phoneNumber());
+
+            for ($j=0; $j < mt_rand(1, 50); $j++) { 
+                $family->addFamilyMember($residents[mt_rand(0, count($residents)-1)]);
+            }
+
+            $manager->persist($family);
         }
+
+        $manager->flush();
+    }
+
 }

@@ -19,4 +19,5 @@ class ResidentController extends AbstractController
             'residents' => $residents,
         ]);
     }
+    
 }
